@@ -1,0 +1,109 @@
+============================================
+RL PPO Demo - Run Examples
+============================================
+
+SETUP (run once):
+-----------------
+cd /home/zczak/Robotics-Project/integrator_robot_project
+source .venv/bin/activate
+pip install -r requirements.txt
+
+
+TRAINING:
+---------
+
+# Default training (300k timesteps)
+python rl_ppo_demo.py --train
+
+# Short training (for testing)
+python rl_ppo_demo.py --train --timesteps 100000
+
+# Long training (better results)
+python rl_ppo_demo.py --train --timesteps 500000
+
+
+EVALUATION:
+-----------
+
+# Evaluate best model with visualization (5 episodes)
+python rl_ppo_demo.py --eval
+
+# More episodes
+python rl_ppo_demo.py --eval --episodes 10
+
+# Use specific model file
+python rl_ppo_demo.py --eval --model ppo_integrator_model --episodes 5
+
+
+RANDOM BASELINE:
+----------------
+
+# See how random actions perform (no training needed)
+python rl_ppo_demo.py --random --episodes 3
+
+
+MONITORING TRAINING:
+--------------------
+
+# View training progress in TensorBoard
+tensorboard --logdir ppo_integrator_logs
+
+# Then open http://localhost:6006 in browser
+
+
+OUTPUT FILES:
+-------------
+
+After training:
+- ppo_integrator_model.zip     : Final trained model
+- best_model/best_model.zip    : Best model during training
+- ppo_integrator_logs/         : TensorBoard logs
+- eval_logs/                   : Evaluation metrics
+
+
+TYPICAL WORKFLOW:
+-----------------
+
+# 1. Train the agent
+python rl_ppo_demo.py --train --timesteps 300000
+
+# 2. Watch it perform
+python rl_ppo_demo.py --eval --episodes 5
+
+# 3. Compare with random baseline
+python rl_ppo_demo.py --random --episodes 3
+
+
+ENVIRONMENT DETAILS:
+--------------------
+
+- Start position: (-8, -8) bottom-left
+- Goal position: (8, 8) top-right
+- Obstacle: Center (0, 0), radius 2.5
+- Max steps per episode: 500
+- Success: Reach within 1.0 of goal
+- Failure: Enter obstacle
+
+
+REWARD STRUCTURE:
+-----------------
+
++100    : Reaching the goal
+-100    : Collision with obstacle
++5*Δd   : Progress toward goal
+-3*e^-d : Proximity penalty (when near obstacle)
+-0.01   : Time penalty (encourages efficiency)
+
+
+VISUALIZATION:
+--------------
+
+- Blue sphere: Robot
+- Green sphere: Goal
+- Red cylinder: Obstacle
+- Red line: Robot's trajectory
+- Gray lines: Workspace boundary [-10, 10]²
+- White ground: Workspace floor
+
+Press Ctrl+C to exit after evaluation.
+

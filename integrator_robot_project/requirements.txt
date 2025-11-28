@@ -1,2 +1,4 @@
 pybullet
 numpy
+stable-baselines3[extra]
+gymnasium
