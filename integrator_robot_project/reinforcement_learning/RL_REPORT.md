@@ -196,13 +196,13 @@ Training progress is logged to TensorBoard:
 
 ```bash
 # Default training (300k timesteps)
-python rl_ppo_demo.py --train
+python reinforcement_learning/integrator_rl_control.py --train
 
 # Custom timesteps
-python rl_ppo_demo.py --train --timesteps 500000
+python reinforcement_learning/integrator_rl_control.py --train --timesteps 500000
 ```
 
-Training outputs:
+Training outputs (in `reinforcement_learning/` directory):
 - `ppo_integrator_model.zip` - Final model
 - `best_model/` - Best model during training
 - `ppo_integrator_logs/` - TensorBoard logs
@@ -212,23 +212,23 @@ Training outputs:
 
 ```bash
 # Evaluate with visualization
-python rl_ppo_demo.py --eval --episodes 5
+python reinforcement_learning/integrator_rl_control.py --eval --episodes 5
 
 # Use specific model
-python rl_ppo_demo.py --eval --model my_model --episodes 10
+python reinforcement_learning/integrator_rl_control.py --eval --model my_model --episodes 10
 ```
 
 ### Random Baseline
 
 ```bash
 # Run with random actions (no training)
-python rl_ppo_demo.py --random --episodes 3
+python reinforcement_learning/integrator_rl_control.py --random --episodes 3
 ```
 
 ### TensorBoard Monitoring
 
 ```bash
-tensorboard --logdir ppo_integrator_logs
+tensorboard --logdir reinforcement_learning/ppo_integrator_logs
 ```
 
 ---
@@ -285,15 +285,23 @@ The trained agent should:
 
 ```
 integrator_robot_project/
-├── rl_ppo_demo.py                # RL/PPO control script
-├── rl_run_examples.txt           # Example commands
-├── RL_REPORT.md                  # This report
-├── symbolic_control_demo.py      # Symbolic control script
-├── SYMBOLIC_REPORT.md            # Symbolic control report
-├── integrator_pybullet_demo.py   # Classical control script
-├── REPORT.md                     # Classical control report
-├── requirements.txt              # Dependencies
-└── Project.md                    # Original specification
+├── classical_control/
+│   ├── integrator_classical_control.py   # Classical control script
+│   ├── classical_examples.txt            # Example commands
+│   └── CLASSICAL_REPORT.md               # Classical control report
+├── symbolic_control/
+│   ├── integrator_symbolic_control.py    # Symbolic control script
+│   ├── symbolic_examples.txt             # Example commands
+│   └── SYMBOLIC_REPORT.md                # Symbolic control report
+├── reinforcement_learning/
+│   ├── integrator_rl_control.py          # Main RL/PPO control script
+│   ├── rl_examples.txt                   # Example commands
+│   ├── RL_REPORT.md                      # This report
+│   ├── best_model/                       # Best model during training
+│   ├── ppo_integrator_logs/              # TensorBoard logs
+│   └── eval_logs/                        # Evaluation metrics
+├── requirements.txt                      # Dependencies
+└── Project.md                            # Original specification
 ```
 
 ---

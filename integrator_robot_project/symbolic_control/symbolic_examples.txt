@@ -1,0 +1,94 @@
+============================================
+Symbolic Control - Run Examples
+============================================
+
+SETUP (run once):
+-----------------
+cd /home/zczak/Robotics-Project/integrator_robot_project
+source .venv/bin/activate
+
+
+AVAILABLE SPECIFICATIONS:
+-------------------------
+
+1. REACH-AVOID (default):
+   LTL: ◇goal ∧ □¬obstacle
+   Description: Reach goal while always avoiding obstacles
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec reach_avoid
+
+
+2. SEQUENTIAL:
+   LTL: ◇wp1 ∧ ◇(wp1 → ◇wp2) ∧ ◇(wp2 → ◇goal)
+   Description: Visit waypoint1, then waypoint2, then goal in order
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec sequential
+
+
+3. PATROL:
+   LTL: □◇wp1 ∧ □◇wp2 ∧ □◇goal
+   Description: Continuously loop through waypoints forever
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec patrol
+
+
+4. COVERAGE:
+   LTL: ◇corner1 ∧ ◇corner2 ∧ ◇corner3 ∧ ◇corner4
+   Description: Visit all four corners of the workspace
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec coverage
+
+
+5. CHARGE-PATROL:
+   LTL: □◇charging ∧ □◇wp1 ∧ □◇wp2
+   Description: Patrol waypoints but return to charging station periodically
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec charge_patrol
+
+
+6. SURVEILLANCE:
+   LTL: □(◇wp1 ∧ ◇wp2 ∧ ◇wp3 ∧ ◇goal)
+   Description: Monitor multiple areas in a continuous loop
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec surveillance
+
+
+7. ESCAPE:
+   LTL: ◇goal via safe path
+   Description: Navigate through obstacle maze to reach goal
+   
+   python symbolic_control/integrator_symbolic_control.py --gui --spec escape
+
+
+OPTIONS:
+--------
+--kp <value>      Controller gain (default: 2.0)
+--steps <value>   Max simulation steps (default: 1000)
+
+
+EXAMPLES WITH OPTIONS:
+----------------------
+# Faster controller
+python symbolic_control/integrator_symbolic_control.py --gui --spec reach_avoid --kp 3.0
+
+# Longer simulation for patrol
+python symbolic_control/integrator_symbolic_control.py --gui --spec patrol --steps 2000
+
+# Surveillance with custom gain
+python symbolic_control/integrator_symbolic_control.py --gui --spec surveillance --kp 2.5 --steps 1500
+
+
+VISUALIZATION:
+--------------
+- Blue region: Start position
+- Green region: Goal
+- Red regions: Obstacles (to avoid)
+- Yellow/Orange regions: Waypoints
+- Cyan region: Waypoint 3
+- Magenta region: Waypoint 4
+- Purple region: Charging station
+- Red line: Robot's actual trajectory
+- White ground: Workspace floor
+- Gray box: Workspace bounds [-10, 10]²
+
+Press Ctrl+C to exit after simulation.

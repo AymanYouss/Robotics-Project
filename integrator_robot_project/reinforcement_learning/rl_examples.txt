@@ -1,5 +1,5 @@
 ============================================
-RL PPO Demo - Run Examples
+Reinforcement Learning - Run Examples
 ============================================
 
 SETUP (run once):
@@ -13,40 +13,40 @@ TRAINING:
 ---------
 
 # Default training (300k timesteps)
-python rl_ppo_demo.py --train
+python reinforcement_learning/integrator_rl_control.py --train
 
 # Short training (for testing)
-python rl_ppo_demo.py --train --timesteps 100000
+python reinforcement_learning/integrator_rl_control.py --train --timesteps 100000
 
 # Long training (better results)
-python rl_ppo_demo.py --train --timesteps 500000
+python reinforcement_learning/integrator_rl_control.py --train --timesteps 500000
 
 
 EVALUATION:
 -----------
 
 # Evaluate best model with visualization (5 episodes)
-python rl_ppo_demo.py --eval
+python reinforcement_learning/integrator_rl_control.py --eval
 
 # More episodes
-python rl_ppo_demo.py --eval --episodes 10
+python reinforcement_learning/integrator_rl_control.py --eval --episodes 10
 
 # Use specific model file
-python rl_ppo_demo.py --eval --model ppo_integrator_model --episodes 5
+python reinforcement_learning/integrator_rl_control.py --eval --model reinforcement_learning/ppo_integrator_model --episodes 5
 
 
 RANDOM BASELINE:
 ----------------
 
 # See how random actions perform (no training needed)
-python rl_ppo_demo.py --random --episodes 3
+python reinforcement_learning/integrator_rl_control.py --random --episodes 3
 
 
 MONITORING TRAINING:
 --------------------
 
 # View training progress in TensorBoard
-tensorboard --logdir ppo_integrator_logs
+tensorboard --logdir reinforcement_learning/ppo_integrator_logs
 
 # Then open http://localhost:6006 in browser
 
@@ -54,7 +54,7 @@ tensorboard --logdir ppo_integrator_logs
 OUTPUT FILES:
 -------------
 
-After training:
+After training (in reinforcement_learning/ directory):
 - ppo_integrator_model.zip     : Final trained model
 - best_model/best_model.zip    : Best model during training
 - ppo_integrator_logs/         : TensorBoard logs
@@ -65,13 +65,13 @@ TYPICAL WORKFLOW:
 -----------------
 
 # 1. Train the agent
-python rl_ppo_demo.py --train --timesteps 300000
+python reinforcement_learning/integrator_rl_control.py --train --timesteps 300000
 
 # 2. Watch it perform
-python rl_ppo_demo.py --eval --episodes 5
+python reinforcement_learning/integrator_rl_control.py --eval --episodes 5
 
 # 3. Compare with random baseline
-python rl_ppo_demo.py --random --episodes 3
+python reinforcement_learning/integrator_rl_control.py --random --episodes 3
 
 
 ENVIRONMENT DETAILS:

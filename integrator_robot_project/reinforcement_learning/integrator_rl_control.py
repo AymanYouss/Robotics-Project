@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Reinforcement Learning Demo: 2D Integrator Control with PPO
+Reinforcement Learning Control: 2D Integrator with PPO
 Uses stable-baselines3 for PPO training on the integrator environment.
 """
 
@@ -12,6 +12,10 @@ import pybullet_data
 import time
 import argparse
 import os
+from pathlib import Path
+
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).parent.resolve()
 
 # System parameters
 TAU = 0.1  # Sampling period
@@ -307,7 +311,7 @@ def train(args):
         vf_coef=0.5,
         max_grad_norm=0.5,
         verbose=1,
-        tensorboard_log="./ppo_integrator_logs/",
+        tensorboard_log=str(SCRIPT_DIR / "ppo_integrator_logs"),
         policy_kwargs=dict(
             net_arch=[dict(pi=[64, 64], vf=[64, 64])]
         )
@@ -316,8 +320,8 @@ def train(args):
     # Eval callback to save best model
     eval_cb = EvalCallback(
         eval_env,
-        best_model_save_path="./best_model/",
-        log_path="./eval_logs/",
+        best_model_save_path=str(SCRIPT_DIR / "best_model"),
+        log_path=str(SCRIPT_DIR / "eval_logs"),
         eval_freq=10000,
         n_eval_episodes=10,
         deterministic=True,
@@ -334,7 +338,7 @@ def train(args):
     )
     
     # Save model
-    model_path = "ppo_integrator_model"
+    model_path = str(SCRIPT_DIR / "ppo_integrator_model")
     model.save(model_path)
     print(f"\nModel saved to {model_path}.zip")
     
@@ -348,17 +352,18 @@ def evaluate(args):
     from stable_baselines3 import PPO
     
     # Try best model first
-    if os.path.exists("./best_model/best_model.zip"):
-        model_path = "./best_model/best_model"
+    best_model_path = SCRIPT_DIR / "best_model" / "best_model.zip"
+    if best_model_path.exists():
+        model_path = str(SCRIPT_DIR / "best_model" / "best_model")
         print("Using best model from training...")
     elif args.model:
         model_path = args.model
     else:
-        model_path = "ppo_integrator_model"
+        model_path = str(SCRIPT_DIR / "ppo_integrator_model")
     
     if not os.path.exists(f"{model_path}.zip"):
         print(f"Model not found: {model_path}.zip")
-        print("Train first with: python rl_ppo_demo.py --train")
+        print("Train first with: python reinforcement_learning/integrator_rl_control.py --train")
         return
     
     print(f"Loading model from {model_path}.zip...")
@@ -441,7 +446,7 @@ def demo_random(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="RL PPO Demo for 2D Integrator")
+    parser = argparse.ArgumentParser(description="RL PPO Control for 2D Integrator")
     parser.add_argument("--train", action="store_true", help="Train PPO agent")
     parser.add_argument("--eval", action="store_true", help="Evaluate trained agent")
     parser.add_argument("--random", action="store_true", help="Run with random actions")
@@ -458,9 +463,9 @@ def main():
         demo_random(args)
     else:
         print("Usage:")
-        print("  Train:    python rl_ppo_demo.py --train --timesteps 100000")
-        print("  Evaluate: python rl_ppo_demo.py --eval --episodes 5")
-        print("  Random:   python rl_ppo_demo.py --random --episodes 3")
+        print("  Train:    python reinforcement_learning/integrator_rl_control.py --train --timesteps 100000")
+        print("  Evaluate: python reinforcement_learning/integrator_rl_control.py --eval --episodes 5")
+        print("  Random:   python reinforcement_learning/integrator_rl_control.py --random --episodes 3")
 
 
 if __name__ == "__main__":

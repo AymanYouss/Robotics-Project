@@ -1,0 +1,71 @@
+============================================
+Classical Control - Run Examples
+============================================
+
+SETUP (run once):
+-----------------
+cd /home/zczak/Robotics-Project/integrator_robot_project
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+
+LINEAR TRAJECTORY (default):
+----------------------------
+python classical_control/integrator_classical_control.py --gui --trajectory linear
+
+# Custom start and goal:
+python classical_control/integrator_classical_control.py --gui --trajectory linear --start -5 0 --goal 5 5
+
+
+CIRCULAR TRAJECTORY:
+--------------------
+python classical_control/integrator_classical_control.py --gui --trajectory circular
+
+# Custom center and radius:
+python classical_control/integrator_classical_control.py --gui --trajectory circular --center 0 0 --radius 6
+
+
+INFINITY (LEMNISCATE) TRAJECTORY:
+---------------------------------
+python classical_control/integrator_classical_control.py --gui --trajectory infinity
+
+# Custom center and scale:
+python classical_control/integrator_classical_control.py --gui --trajectory infinity --center 0 0 --scale 7
+
+
+PID TUNING OPTIONS:
+-------------------
+--kp <value>        Proportional gain (default: 2.0)
+--ki <value>        Integral gain (default: 0.1)
+--kd <value>        Derivative gain (default: 0.5)
+
+
+COMMON OPTIONS:
+---------------
+--steps <value>     Simulation steps (default: 600)
+--horizon <value>   Trajectory points (default: 200)
+--keep-running      Don't stop simulation at goal
+
+
+EXAMPLES WITH PID TUNING:
+-------------------------
+# Aggressive controller (faster response):
+python classical_control/integrator_classical_control.py --gui --trajectory circular --kp 3.0 --kd 0.8
+
+# Smooth controller (less oscillation):
+python classical_control/integrator_classical_control.py --gui --trajectory infinity --kp 1.5 --ki 0.05 --kd 0.3
+
+# High precision tracking:
+python classical_control/integrator_classical_control.py --gui --trajectory linear --kp 2.5 --ki 0.2 --kd 0.6
+
+
+VISUALIZATION NOTES:
+--------------------
+- Yellow line: Reference trajectory (what robot should follow)
+- Cyan line: Actual trajectory (drawn after simulation ends)
+- Blue sphere: Robot
+- Green sphere: Goal marker (linear trajectory only)
+- Red box: Workspace bounds [-10, 10]^2
+
+Press Ctrl+C to exit after simulation completes.
